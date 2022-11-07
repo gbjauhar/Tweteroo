@@ -4,13 +4,15 @@ import cors from "cors"
 const app = express()
 app.use(cors())
 app.use(express.json());
-let avatarPerfil = ""
 
+
+let profilePic = ""
 
 const tweets = [
     {
         username: "bobesponja",
-        tweet: "eu amo o hub"
+        tweet: "eu amo o hub",
+        avatar: "https://super.abril.com.br/wp-content/uploads/2020/09/04-09_gato_SITE.jpg?quality=70&strip=info"
     }
 ]
 
@@ -21,6 +23,10 @@ const users = [
     }
 ]
 
+app.get("/tweets", (req, res) => {
+
+    res.send(tweets.slice(0,10))
+ })
 
 app.post("/sign-up", (req, res) => {
 
@@ -30,6 +36,8 @@ app.post("/sign-up", (req, res) => {
         username,
         avatar
     }
+
+    profilePic = avatar
 
     users.push(signup)
 
@@ -42,19 +50,17 @@ app.post("/tweets", (req, res) =>{
 
     const postTweet = {
         username,
-        tweet
+        tweet,
+        avatar: profilePic
     }
 
-    tweets.push(postTweet)
+    tweets.unshift(postTweet)
 
     res.status(200).send("OK")
 })
 
 
- app.get("/tweets", (req, res) => {
-
-    res.send(tweets)
-}) 
+ 
 
 
 app.listen(5000, () => console.log(`Server running in port ${5000}`))
